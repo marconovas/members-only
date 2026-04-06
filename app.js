@@ -4,7 +4,7 @@ const path = require("node:path");
 const session = require("express-session");
 const pgSession = require("connect-pg-simple")(session);
 const pool = require("./db/pool");
-//const passport = require("./config/passport");
+const passport = require("./config/passport");
 const authRoutes = require("./routes/authRoutes");
 
 const app = express();
@@ -26,8 +26,8 @@ app.use(session({
     saveUninitialized: false
 }));
 
-//app.use(passport.initialize());
-//app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/", authRoutes);
 

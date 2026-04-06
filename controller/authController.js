@@ -5,6 +5,10 @@ exports.home = (req, res) => {
     res.render("index");
 } 
 
+exports.getDashBoard = (req, res) => {
+    res.render("dashboard",  { user: req.user } );
+}
+
 exports.getRegister = (req, res) => {
     res.render("register-form");
 }
@@ -18,9 +22,21 @@ exports.postRegister = async (req, res, next) => {
             [req.body.firstname, req.body.lastname, req.body.username, hashed, req.body.email, false]
         );
     
-        return res.redirect("/"); //CHANGE REDIRECT
+        return res.redirect("/login");
     } catch (error) {
         console.error(error);
         next(error);
     }
 }
+
+exports.getLogIn = (req, res) => {
+    res.render("login-form");
+}
+
+
+exports.logout = (req, res, next) => {
+    req.logout( error => {
+        if(error) return next(error);
+        res.redirect("/");
+    });
+};
