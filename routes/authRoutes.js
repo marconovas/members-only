@@ -3,6 +3,11 @@ const passport = require("passport");
 const router = Router();
 const authController = require("../controller/authController");
 
+function isAuth(req, res, next) {
+    if (req.isAuthenticated()) return next();
+    res.redirect("/login");
+}
+
 router.get("/", authController.home);
 
 router.get("/dashboard", authController.getDashBoard);
@@ -19,5 +24,9 @@ router.post("/login",
 );
 
 router.get("/logout", authController.logout);
+
+//MESSAGES
+router.get("/messages", authController.getMessageForm);
+router.post("/messages", isAuth, authController.postMessage);
 
 module.exports = router;

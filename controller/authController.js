@@ -33,10 +33,33 @@ exports.getLogIn = (req, res) => {
     res.render("login-form");
 }
 
-
 exports.logout = (req, res, next) => {
     req.logout( error => {
         if(error) return next(error);
         res.redirect("/");
     });
 };
+
+//MESSAGES
+exports.getMessageForm = (req, res) => {
+    res.render("messages");
+}
+
+exports.postMessage = async (req, res, next) => {
+    
+    try{
+        if(!req.user) {
+            return res.redirect("/login");
+        }
+        
+        await pool.query(
+            "INSERT INTO messages(content, user_id) VALUES ($1, $2)",
+            [req.body.text, req.user.id]
+        );
+
+        return res.redirect("/dashboard");
+    } catch(error) {
+        console.log(error);
+        return next(error);
+    }
+}
