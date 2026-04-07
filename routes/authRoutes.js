@@ -26,7 +26,7 @@ router.post("/login",
 router.get("/logout", authController.logout);
 
 //MESSAGES
-router.get("/messages", authController.getMessageForm);
-router.post("/messages", isAuth, authController.postMessage);
+router.get("/message", authController.getMessageForm);
+router.post("/message", isAuth, authController.postMessage);
 
 module.exports = router;

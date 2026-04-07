@@ -8,5 +8,21 @@
 <body>
     <h2>Welcome! <%= user.username %></h2>
     <a href="/logout">End Session</a>
+    <a href="/message">New Message</a>
+
+    <h4>Messages</h4>
+    <% if(messages) {%>
+        <ul>
+            <% messages.forEach(message => { %>
+                <li>
+                    <p>
+                        <strong><%= message.username %></strong>
+                        <%= message.content %></li>
+                    </p>
+            <%})%>
+        </ul>
+    <%} else {%>
+        <p>No messages</p>    
+    <%}%>
 </body>
 </html>

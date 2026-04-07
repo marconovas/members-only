@@ -5,8 +5,19 @@ exports.home = (req, res) => {
     res.render("index");
 } 
 
-exports.getDashBoard = (req, res) => {
-    res.render("dashboard",  { user: req.user } );
+exports.getDashBoard = async (req, res) => {
+    //TRAER TODOS LOS MENSAJES DE TODOS LOS USUARIOS (NO PRIVADO)
+    const messages = await pool.query(`
+        SELECT messages.*, users.username
+        FROM messages
+        JOIN users ON messages.user_id = users.user_id
+        ORDER BY created_at DESC
+    `);
+
+    res.render("dashboard",  { 
+        user: req.user, 
+        messages: messages.rows
+    });
 }
 
 exports.getRegister = (req, res) => {
@@ -46,15 +57,14 @@ exports.getMessageForm = (req, res) => {
 }
 
 exports.postMessage = async (req, res, next) => {
-    
     try{
         if(!req.user) {
             return res.redirect("/login");
         }
-        
+
         await pool.query(
             "INSERT INTO messages(content, user_id) VALUES ($1, $2)",
-            [req.body.text, req.user.id]
+            [req.body.text, req.user.user_id]
         );
 
         return res.redirect("/dashboard");
