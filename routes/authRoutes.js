@@ -39,7 +39,7 @@ router.get("/club", authController.getClubForm);
 router.post("/club", authController.postClubForm);
 
 //DELETE MESSAGES
-router.post("/messages/:id/delete", authController.delete);
+router.post("/messages/:id/delete", isAuth, isAdmin, authController.delete);
 
 
 module.exports = router;
