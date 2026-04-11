@@ -6,19 +6,46 @@
     <title>Document</title>
 </head>
 <body>
-    <h2>Welcome! <%= user.username %></h2>
+    <h2>Welcome! 
+        <% if(admin) { %>
+            <p>Admin</p> 
+        <% } %>
+        <%= user.username %>
+    </h2>
     <a href="/logout">End Session</a>
-    <a href="/message">New Message</a>
+    <a href="/messages/new">New Message</a>
+    <% if(!admin) { %>
+        <a href="/club">Join the club!</a> 
+    <% } %>
 
     <h4>Messages</h4>
-    <% if(messages) {%>
+    <% if(messages && admin) {%>
+        <ul>
+            <% messages.forEach(message => { %>
+                    <li>
+                        <p>
+                            <strong><%= message.username %></strong>
+                            <%= message.content %>
+                            <strong>Date:</strong>
+                            <%= message.created_at %>
+                            <strong>User ID:</strong>
+                            <%= message.user_id %>
+                            <form action="/messages/<%= message.message_id %>/delete" method="POST">
+                                <button type="submit">Delete</button>
+                            </form>
+                        </p>
+                    </li>
+            <%})%>
+        </ul> 
+    <%} else if(messages) {%>
         <ul>
             <% messages.forEach(message => { %>
                 <li>
                     <p>
                         <strong><%= message.username %></strong>
-                        <%= message.content %></li>
+                        <%= message.content %>
                     </p>
+                </li>
             <%})%>
         </ul>
     <%} else {%>

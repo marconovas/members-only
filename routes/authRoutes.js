@@ -8,9 +8,14 @@ function isAuth(req, res, next) {
     res.redirect("/login");
 }
 
+function isAdmin (req, res, next) {
+    if(req.user && req.user.role === true) return next();
+    return res.redirect("/login");
+}
+
 router.get("/", authController.home);
 
-router.get("/dashboard", authController.getDashBoard);
+router.get("/dashboard", isAuth, authController.getDashBoard);
 
 router.get("/register", authController.getRegister);
 router.post("/register", authController.postRegister);
@@ -26,7 +31,15 @@ router.post("/login",
 router.get("/logout", authController.logout);
 
 //MESSAGES
-router.get("/message", authController.getMessageForm);
-router.post("/message", isAuth, authController.postMessage);
+router.get("/messages/new", authController.getMessageForm);
+router.post("/messages/new", isAuth, authController.postMessage);
+
+//admin
+router.get("/club", authController.getClubForm);
+router.post("/club", authController.postClubForm);
+
+//DELETE MESSAGES
+router.post("/messages/:id/delete", authController.delete);
+
 
 module.exports = router;

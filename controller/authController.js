@@ -16,7 +16,8 @@ exports.getDashBoard = async (req, res) => {
 
     res.render("dashboard",  { 
         user: req.user, 
-        messages: messages.rows
+        messages: messages.rows,
+        admin: req.user.role
     });
 }
 
@@ -72,4 +73,49 @@ exports.postMessage = async (req, res, next) => {
         console.log(error);
         return next(error);
     }
+}
+
+//DELETE MESSAGE
+exports.delete = async(req, res, next) => {
+    const msgId = req.params.id;
+
+    try{
+        const result = await pool.query(
+            "DELETE FROM messages WHERE message_id = $1",
+            [msgId]
+        );
+
+        if(result.rowCount === 0) {
+            return res.status(404).send("Message not Found");
+        }
+
+        res.redirect("/dashboard");
+    } catch(error) {
+        console.log(error);
+        return next(error);
+    }
+}
+
+//ADMIN
+exports.getClubForm = (req, res) => {
+    res.render("club-form");
+}
+
+exports.postClubForm = async (req, res, next) => {
+    const password = req.body.password;
+    const userId = req.user.user_id;
+
+    if(password === process.env.ADMIN_PASSWORD){
+        try{
+            await pool.query(
+                "UPDATE users SET role = true WHERE user_id = $1",
+                [userId]
+            )
+
+            return res.redirect("/dashboard");
+        } catch(error) {
+            console.log(error);
+            return next(error);
+        }
+    } 
 }
