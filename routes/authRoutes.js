@@ -2,6 +2,7 @@ const { Router } = require("express");
 const passport = require("passport");
 const router = Router();
 const authController = require("../controller/authController");
+const { registerValidator } = require("../validators/userValidators");
 
 function isAuth(req, res, next) {
     if (req.isAuthenticated()) return next();
@@ -18,7 +19,7 @@ router.get("/", authController.home);
 router.get("/dashboard", isAuth, authController.getDashBoard);
 
 router.get("/register", authController.getRegister);
-router.post("/register", authController.postRegister);
+router.post("/register", registerValidator, authController.postRegister);
 
 router.get("/login", authController.getLogIn);
 router.post("/login", 

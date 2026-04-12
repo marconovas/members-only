@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const pool = require("../db/pool");
+const { validationResult } = require("express-validator");
 
 exports.home = (req, res) => {
     res.render("index");
@@ -22,10 +23,18 @@ exports.getDashBoard = async (req, res) => {
 }
 
 exports.getRegister = (req, res) => {
-    res.render("register-form");
+    res.render("register-form", { errors: [] });
 }
 
 exports.postRegister = async (req, res, next) => {
+    const errors = validationResult(req);
+
+    if(!errors.isEmpty()){
+        return res.status(400).render("register-form", { 
+            errors: errors.array()
+        });
+    }
+
     try{
         const hashed = await bcrypt.hash(req.body.password, 10);
     
