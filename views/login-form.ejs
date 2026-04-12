@@ -3,16 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log-In</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <title>Login</title>
 </head>
 <body>
-    <h2>Please Log-in</h2>
-    <form action="/login" method="POST">
-        <label for="username">Username:</label>
-        <input type="text" name="username" id="username">
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password">
-        <button type="submit">Log_in</button>
-    </form>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div>Members Only</div>
+        <div>
+            <a href="/">Home</a>
+            <a href="/register">Register</a>
+        </div>
+    </div>
+
+    <!-- Contenedor -->
+    <div class="container">
+
+        <h2>Please log in</h2>
+
+        <!-- Errores -->
+        <% if (errors && errors.length > 0) { %>
+            <ul class="errors">
+                <% errors.forEach(error => { %>
+                    <li><%= error.msg || error %></li>
+                <% }) %>
+            </ul>
+        <% } %>
+
+        <!-- Formulario -->
+        <form action="/login" method="POST">
+
+            <label for="username">Username</label>
+            <input 
+                type="text" 
+                name="username" 
+                id="username"
+                required
+            >
+
+            <label for="password">Password</label>
+            <input 
+                type="password" 
+                name="password" 
+                id="password"
+                required
+            >
+
+            <button type="submit">Log in</button>
+
+        </form>
+
+        <p style="margin-top: 15px;">
+            Don’t have an account? 
+            <a href="/register">Register here</a>
+        </p>
+
+    </div>
+
 </body>
 </html>

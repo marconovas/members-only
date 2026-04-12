@@ -3,53 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <title>Dashboard</title>
 </head>
 <body>
-    <h2>Welcome! 
-        <% if(admin) { %>
-            <p>Admin</p> 
-        <% } %>
-        <%= user.username %>
-    </h2>
-    <a href="/logout">End Session</a>
-    <a href="/messages/new">New Message</a>
-    <% if(!admin) { %>
-        <a href="/club">Join the club!</a> 
-    <% } %>
 
-    <h4>Messages</h4>
-    <% if(messages && admin) {%>
-        <ul>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div>Members Only</div>
+        <div>
+            <a href="/messages/new">New Message</a>
+            <% if(!admin) { %>
+                <a href="/club">Join Club</a>
+            <% } %>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <!-- Contenido -->
+    <div class="container">
+
+        <h2>
+            Welcome, <%= user.username %>
+            <% if(admin) { %>
+                <span>(Admin)</span>
+            <% } %>
+        </h2>
+
+        <h3>Messages</h3>
+
+        <% if(messages && messages.length > 0) { %>
+
             <% messages.forEach(message => { %>
-                    <li>
-                        <p>
-                            <strong><%= message.username %></strong>
-                            <%= message.content %>
-                            <strong>Date:</strong>
-                            <%= message.created_at %>
-                            <strong>User ID:</strong>
-                            <%= message.user_id %>
-                            <form action="/messages/<%= message.message_id %>/delete" method="POST">
-                                <button type="submit">Delete</button>
-                            </form>
-                        </p>
-                    </li>
-            <%})%>
-        </ul> 
-    <%} else if(messages) {%>
-        <ul>
-            <% messages.forEach(message => { %>
-                <li>
-                    <p>
+                <div class="card">
+
+                    <div class="card-header">
                         <strong><%= message.username %></strong>
+
+                        <% if(admin) { %>
+                            <span>
+                                ID: <%= message.user_id %> |
+                                <%= message.created_at %>
+                            </span>
+                        <% } else { %>
+                            <span><%= message.created_at %></span>
+                        <% } %>
+                    </div>
+
+                    <div class="card-content">
                         <%= message.content %>
-                    </p>
-                </li>
-            <%})%>
-        </ul>
-    <%} else {%>
-        <p>No messages</p>    
-    <%}%>
+                    </div>
+
+                    <% if(admin) { %>
+                        <form action="/messages/<%= message.message_id %>/delete" method="POST">
+                            <button type="submit">Delete</button>
+                        </form>
+                    <% } %>
+
+                </div>
+            <% }) %>
+
+        <% } else { %>
+            <p>No messages yet.</p>
+        <% } %>
+
+    </div>
+
 </body>
 </html>

@@ -4,29 +4,86 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
+    <link rel="stylesheet" href="/styles/styles.css">
 </head>
 <body>
-    <h2>Join the club!</h2>
-    <% if(errors) {%>
-        <ul>
-            <% errors.forEach(error => {%>
-                <li><%= error.msg %></li>
-            <% }) %>
-        </ul>
-    <% } %>
 
-    <form action="/register" method="POST">
-        <label for="firstname">First Name:</label>
-        <input type="text" name="firstname" id="firstname" required>
-        <label for="lastname">Last Name:</label>
-        <input type="text" name="lastname" id="lastname" required>
-        <label for="username">Username:</label>
-        <input type="text" name="username" id="username" required>
-        <label for="email">E-mail:</label>
-        <input type="text" name="email" id="email" required>
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" required>
-        <button type="submit">Send</button>
-    </form>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div>Members Only</div>
+        <div>
+            <a href="/">Home</a>
+            <a href="/login">Login</a>
+        </div>
+    </div>
+
+    <!-- Contenedor -->
+    <div class="container">
+
+        <h2>Create an account</h2>
+
+        <!-- Errores -->
+        <% if(errors && errors.length > 0) { %>
+            <ul class="errors">
+                <% errors.forEach(error => { %>
+                    <li><%= error.msg %></li>
+                <% }) %>
+            </ul>
+        <% } %>
+
+        <!-- Formulario -->
+        <form action="/register" method="POST">
+
+            <label for="firstname">First Name</label>
+            <input 
+                type="text" 
+                name="firstname" 
+                id="firstname" 
+                required
+            >
+
+            <label for="lastname">Last Name</label>
+            <input 
+                type="text" 
+                name="lastname" 
+                id="lastname" 
+                required
+            >
+
+            <label for="username">Username</label>
+            <input 
+                type="text" 
+                name="username" 
+                id="username" 
+                required
+            >
+
+            <label for="email">E-mail</label>
+            <input 
+                type="email" 
+                name="email" 
+                id="email" 
+                required
+            >
+
+            <label for="password">Password</label>
+            <input 
+                type="password" 
+                name="password" 
+                id="password" 
+                required
+            >
+
+            <button type="submit">Register</button>
+
+        </form>
+
+        <p style="margin-top: 15px;">
+            Already have an account? 
+            <a href="/login">Log in</a>
+        </p>
+
+    </div>
+
 </body>
 </html>

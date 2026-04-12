@@ -51,7 +51,7 @@ exports.postRegister = async (req, res, next) => {
 }
 
 exports.getLogIn = (req, res) => {
-    res.render("login-form");
+    res.render("login-form", { errors: [] });
 }
 
 exports.logout = (req, res, next) => {
